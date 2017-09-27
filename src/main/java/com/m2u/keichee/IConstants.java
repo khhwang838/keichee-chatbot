@@ -9,6 +9,7 @@ public interface IConstants {
 		int PAGE_SIZE = 10;
 		int PAGE_NUMBER = 1;
 		Locale LOCALE = Locale.KOREA;
+		String BOT_NAME = "alice2";
 	}
 	
 	interface SESSION_INFO{

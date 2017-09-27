@@ -13,13 +13,12 @@ import org.alicebot.ab.constants.MagicStrings;
 import org.alicebot.ab.core.AB;
 import org.alicebot.ab.core.Bot;
 import org.alicebot.ab.core.Chat;
-import org.alicebot.ab.core.Graphmaster;
 import org.alicebot.ab.utils.IOUtils;
-import org.alicebot.ab.utils.Timer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.m2u.keichee.component.BotManager;
 import com.m2u.keichee.domain.Message;
 
 @Service
@@ -27,36 +26,38 @@ public class MainService {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
+	BotManager botManager = BotManager.instance;
+	
 	public String mainFunction(Message msg, String[] options) {
-		String botName = "alice2";
-		String action = "chat";
-
-		logger.info(MagicStrings.programNameVersion);
-
-		for (String s : options) {
-			logger.info(s);
-			String[] splitArg = s.split("=");
-			if (splitArg.length >= 2) {
-				String option = splitArg[0];
-				String value = splitArg[1];
-				if (option.equals("bot"))
-					botName = value;
-				if (option.equals("action"))
-					action = value;
-				if (option.equals("trace") && value.equals("true"))
-					MagicBooleans.trace_mode = true;
-				else
-					MagicBooleans.trace_mode = false;
-			}
-		}
-		logger.info("trace mode = " + MagicBooleans.trace_mode);
-		Graphmaster.enableShortCuts = true;
-//		Bot bot = new Bot(botName, MagicStrings.root_path, action);
-		Bot bot = new Bot(botName, "D:\\kihyun\\workspace\\KeicheeBot\\src\\main\\resources", action);
-
-		if (bot.brain.getCategories().size() < 100)
-			bot.brain.printgraph();
-		return testChat(msg, bot, MagicBooleans.trace_mode);
+//		String botName = "alice2";
+//		String action = "chat";
+//
+//		logger.info(MagicStrings.programNameVersion);
+//
+//		for (String s : options) {
+//			logger.info(s);
+//			String[] splitArg = s.split("=");
+//			if (splitArg.length >= 2) {
+//				String option = splitArg[0];
+//				String value = splitArg[1];
+//				if (option.equals("bot"))
+//					botName = value;
+//				if (option.equals("action"))
+//					action = value;
+//				if (option.equals("trace") && value.equals("true"))
+//					MagicBooleans.trace_mode = true;
+//				else
+//					MagicBooleans.trace_mode = false;
+//			}
+//		}
+//		logger.info("trace mode = " + MagicBooleans.trace_mode);
+//		Graphmaster.enableShortCuts = true;
+////		Bot bot = new Bot(botName, MagicStrings.root_path, action);
+//		Bot bot = new Bot(botName, "D:\\kihyun\\git\\keichee-chatbot\\src\\main\\resources", action);
+//
+//		if (bot.brain.getCategories().size() < 100)
+//			bot.brain.printgraph();
+		return testChat(msg, botManager.getBot(null), MagicBooleans.trace_mode);
 	}
 //	public void mainFunction(Message msg, String[] options) {
 //		String botName = "alice2";
@@ -113,7 +114,7 @@ public class MainService {
 	}
 
 	private String testChat(Message msg, Bot bot, boolean traceMode) {
-		Chat chatSession = new Chat(bot);
+		Chat chatSession = botManager.getChat();
 		bot.brain.nodeStats();
 		MagicBooleans.trace_mode = traceMode;
 		String textLine = msg.getContent();

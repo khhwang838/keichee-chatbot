@@ -23,7 +23,12 @@ public class ServletContextInitializer implements ServletContextListener {
 
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
+		
 		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+		
+		// create a default bot
+		BotManager.instance.createDefaultBot();
+
 		logger.debug("Congratz !!! Context initialized !!!");
 	}
 

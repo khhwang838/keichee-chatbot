@@ -34,7 +34,7 @@ public class MainController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
+	private String home(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);
 		
 		Date date = new Date();
@@ -52,7 +52,7 @@ public class MainController {
 	 */
 	@RequestMapping(value = "/chat", method = RequestMethod.POST)
 	@ResponseBody
-	public String chat(@RequestBody Message msg) {
+	private String chat(@RequestBody Message msg) {
 		
 		logger.info("Input Message : {}", msg);
 		
